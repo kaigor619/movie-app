@@ -1,0 +1,73 @@
+.page {
+  padding: 2rem 1.6rem;
+  flex: 1;
+}
+
+.arrowBack {
+  margin-bottom: 1rem;
+}
+
+.title {
+  color: rgba(255, 255, 255, 0.9);
+
+  font-weight: 500;
+  margin: 0 0 0 0;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.poster {
+  & > img {
+    max-width: 400px;
+    width: 100%;
+    min-width: 400px;
+    display: block;
+  }
+}
+
+.movieContent {
+  margin-left: 2rem;
+  max-width: 40rem;
+  padding-top: 1rem;
+}
+
+.shortInfo {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  & > span {
+    // color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.4);
+    margin-left: 0.5rem;
+    margin-bottom: -0.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+.overview {
+  color: rgba(255, 255, 255, 0.6);
+
+  & > h4 {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 400;
+    margin: 0;
+  }
+
+  & > p {
+    margin-bottom: 0;
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+}

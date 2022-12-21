@@ -1,0 +1,40 @@
+.movieCard {
+  width: 100%;
+}
+
+.imageWrap {
+  position: relative;
+
+  img {
+    width: 100%;
+    border-radius: 0.5rem;
+    // border-top-right-radius: 0.5rem;
+    display: block;
+    cursor: pointer;
+  }
+
+  .rating {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffad0b;
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+.title {
+  margin-top: 0.5rem;
+  color: rgb(255 255 255 / 80%);
+  font-weight: 400;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+}
+
+.genres {
+  color: rgb(255 255 255 / 30%);
+  font-size: 0.8rem;
+}
