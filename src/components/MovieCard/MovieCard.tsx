@@ -1,11 +1,11 @@
 import styles from "./MovieCard.module.scss";
 
 interface Props {
-  imageSrc: string;
+  imageSrc: string | null;
   rating: number;
   title: string;
   genres: string[];
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const MovieCard: React.FC<Props> = ({
@@ -18,7 +18,7 @@ export const MovieCard: React.FC<Props> = ({
   return (
     <div className={styles.movieCard}>
       <div className={styles.imageWrap}>
-        <img onClick={onClick} src={imageSrc} alt="" />
+        <img onClick={onClick} src={imageSrc || "/"} alt="" />
 
         <div className={styles.rating}>{rating}</div>
       </div>

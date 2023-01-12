@@ -1,0 +1,90 @@
+.label {
+  color: rgba(var(--text-primary-rgb), 0.6);
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+  font-weight: 400;
+}
+
+.inputWrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+  --bg-color: #2a353e;
+  --bg-focus-color: #303d48;
+  --border-color: #2a353e;
+  --border-focus-color: #303d48;
+  --text-color: rgba(var(--text-primary-rgb), 0.8);
+
+  &[data-theme="light"] {
+    --bg-color: white;
+    --bg-focus-color: white;
+    --border-color: #e2e2e2;
+    --border-focus-color: black;
+  }
+}
+
+.inputError {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  color: var(--error-color);
+  font-size: 0.7rem;
+  transform: translateY(-0.2rem);
+}
+
+.input {
+  padding: 0.5rem 1.2rem 0.5rem 0.5rem;
+  background-color: var(--bg-color);
+  border: none;
+  border-radius: 0.3rem;
+  color: var(--text-color);
+  width: 100%;
+  box-sizing: border-box;
+  border: 0.1rem solid var(--border-color);
+  font-size: 0.8rem;
+  outline: none;
+  transition: 0.2s background-color;
+
+  &.error {
+    border: 0.1rem solid var(--error-color);
+  }
+
+  &:focus {
+    background-color: var(--bg-focus-color);
+    border: 0.1rem solid var(--border-focus-color);
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+.microphone {
+  color: rgba(var(--text-primary-rgb), 0.6);
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  width: 0.9rem;
+  height: auto;
+  cursor: pointer;
+
+  &.active {
+    color: rgb(var(--text-primary-rgb));
+    animation: microphone 0.3s linear 0s infinite alternate;
+  }
+}
+
+@keyframes microphone {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}

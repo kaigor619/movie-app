@@ -1,49 +1,76 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
-import { MovieCard } from "components/MovieCard";
-import { MovieApi } from "api/movieApi";
-import styles from "./NowPlaying.module.scss";
-
-console.log(MovieApi);
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  Spinner,
+  Page,
+  ErrorMessage,
+  Pagination,
+  MovieCard,
+  EmptyMessage,
+} from "components";
+import { getPosterSrc, route } from "utils";
+import { useMovies } from "hooks";
+import { ROUTE_NAMES } from "routes";
 
 export const NowPlaying: React.FC = () => {
   const navigate = useNavigate();
+  const params = useParams();
 
-  const moviesQuery = useQuery("nowPlayingMovies", () =>
-    fetch(
-      "https://api.themoviedb.org/3/movie/now_playing?api_key=b086d152f4823870ce3113337b2c4355"
-    ).then((res) => res.json())
-  );
+  const activePage = Number(params.page) || 1;
 
-  const genresQuery = useQuery("genres", () =>
-    fetch(
-      "https://api.themoviedb.org/3/genre/movie/list?api_key=b086d152f4823870ce3113337b2c4355"
-    ).then((res) => res.json())
-  );
+  const { isLoading, error, movies, genres } = useMovies({
+    category: "nowPlaying",
+    page: activePage,
+  });
 
   return (
-    <div className={styles.nowPlaying}>
-      <h1 className={styles.title}>Now Playing</h1>
+    <Page>
+      <Page.Title title="Now Playing" />
+      <Page.Content>
+        {error && <ErrorMessage title="Error" description={error.message} />}
 
-      <div className={styles.grid}>
-        {moviesQuery.data?.results.map((x: any) => (
-          <MovieCard
-            key={x.id}
-            title={x.original_title}
-            imageSrc={`https://image.tmdb.org/t/p/w342/${x.poster_path}`}
-            genres={x.genre_ids.map(
-              (c: number) =>
-                genresQuery.data?.genres.find((z: any) => z.id === c)?.name ||
-                ""
-            )}
-            rating={x.vote_average}
-            onClick={() => {
-              navigate(`/movie/${x.id}`);
-            }}
-          />
-        ))}
-      </div>
-    </div>
+        {isLoading && <Spinner size={5} center />}
+
+        {movies && !movies.results.length && <EmptyMessage />}
+
+        {movies && genres && (
+          <>
+            <Page.Grid childrenCount={movies.results.length}>
+              {movies.results.map((x) => (
+                <MovieCard
+                  key={x.id}
+                  title={x.original_title}
+                  imageSrc={
+                    x.poster_path ? getPosterSrc(x.poster_path, 342) : null
+                  }
+                  genres={x.genre_ids.map(
+                    (c) => genres.genres.find((z) => z.id === c)?.name || ""
+                  )}
+                  rating={x.vote_average}
+                  onClick={() => {
+                    navigate(
+                      route("movieDetails", {
+                        route: { movieId: x.id },
+                        query: {
+                          fromPage: ROUTE_NAMES["nowPlaying"],
+                        },
+                      })
+                    );
+                  }}
+                />
+              ))}
+            </Page.Grid>
+
+            <Pagination
+              totalCount={movies.total_pages}
+              activePage={activePage - 1}
+              onChangePage={(pageIndex) => {
+                const index = pageIndex + 1;
+                navigate(route("nowPlaying", { route: { page: index || 1 } }));
+              }}
+            />
+          </>
+        )}
+      </Page.Content>
+    </Page>
   );
 };

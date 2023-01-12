@@ -1,5 +1,8 @@
 .movieCard {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
 }
 
 .imageWrap {
@@ -8,9 +11,12 @@
   img {
     width: 100%;
     border-radius: 0.5rem;
-    // border-top-right-radius: 0.5rem;
     display: block;
     cursor: pointer;
+    transition: 0.2s transform;
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 
   .rating {
@@ -18,8 +24,8 @@
     top: 0;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #ffad0b;
-    color: #fff;
+    background-color: rgb(var(--yellow-sea-rgb));
+    color: white;
     padding: 0.2rem 0.5rem;
     border-radius: 0.5rem;
     font-size: 0.8rem;
@@ -28,13 +34,14 @@
 
 .title {
   margin-top: 0.5rem;
-  color: rgb(255 255 255 / 80%);
+  color: rgba(var(--text-primary-rgb), 0.8);
   font-weight: 400;
   margin-bottom: 0.3rem;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .genres {
-  color: rgb(255 255 255 / 30%);
+  color: rgba(var(--text-primary-rgb), 0.3);
   font-size: 0.8rem;
 }

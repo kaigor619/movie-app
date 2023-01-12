@@ -1,40 +1,98 @@
-import { MoviesListSchema, MoviesList } from "./movieApiSchemas";
-
-// const newMovies = {
-//   dates: {
-//     maximum: "2022-12-19",
-//     minimum: "2022-11-01",
-//   },
-//   page: 1,
-//   results: [
-//     {
-//       adult: false,
-//       backdrop_path: "/198vrF8k7mfQ4FjDJsBmdQcaiyq.jpg",
-//       genre_ids: [878, 28, 12],
-//       id: 76600,
-//       original_language: "en",
-//       original_title: "Avatar: The Way of Water",
-//       overview:
-//         "Set more than a decade after the events of the first film, learn the story of the Sully family (Jake, Neytiri, and their kids), the trouble that follows them, the lengths they go to keep each other safe, the battles they fight to stay alive, and the tragedies they endure.",
-//       popularity: 4650.217,
-//       poster_path: "/94xxm5701CzOdJdUEdIuwqZaowx.jpg",
-//       release_date: "2022-12-14",
-//       title: "Avatar: The Way of Water",
-//       video: false,
-//       vote_average: 8.1,
-//       vote_count: 793,
-//     },
-//   ],
-//   total_pages: 101,
-//   total_results: 2001,
-// };
-
-// console.log("grgr");
-
-// MoviesListSchema.parse(newMovies);
-
-console.log(process.env);
+import { api } from "utils/api";
+import {
+  MoviesListSchema,
+  GenreListSchema,
+  MovieDetailsSchema,
+  MoviesList,
+  NowPlayingMovies,
+  FavoriteMovie,
+  FavoriteMoviesSchema,
+  FavoriteMovies,
+  NowPlayingMoviesSchema,
+} from "./movieApiSchemas";
+import { MoviesDb } from "services/moviesDB";
 
 export const MovieApi = {
-  getNowPlayingMovies: () => {},
-};
+  getNowPlayingMovies: ({ page = 1 }: { page: number }) =>
+    api<NowPlayingMovies>({
+      path: "/movie/now_playing",
+      responseType: "json",
+      method: "GET",
+      responseSchema: NowPlayingMoviesSchema,
+      query: {
+        page,
+      },
+    }),
+
+  getPopularMovies: ({ page = 1 }: { page: number }) =>
+    api<MoviesList>({
+      path: "/movie/popular",
+      responseType: "json",
+      method: "GET",
+      responseSchema: MoviesListSchema,
+      query: {
+        page,
+      },
+    }),
+  getGenres: () =>
+    api({
+      method: "GET",
+      responseType: "json",
+      responseSchema: GenreListSchema,
+      path: "/genre/movie/list",
+    }),
+  getMovieById: (movieId: string) =>
+    api({
+      path: `/movie/${movieId}`,
+      responseType: "json",
+      method: "GET",
+      responseSchema: MovieDetailsSchema,
+    }),
+  getFavorites: () =>
+    new Promise<FavoriteMovies>((resolve, reject) => {
+      setTimeout(async () => {
+        try {
+          const movieDb = new MoviesDb();
+          const movies = await movieDb.getAll();
+          const schemaResult = FavoriteMoviesSchema.safeParse(movies);
+          if (schemaResult.success) resolve(movies);
+          else reject(schemaResult.error?.message);
+        } catch (err) {
+          reject(err);
+        }
+      }, 2000);
+    }),
+  addFavoriteMovie: (newMovie: Omit<FavoriteMovie, "id">) =>
+    new Promise<void>((resolve, reject) => {
+      setTimeout(async () => {
+        try {
+          const movieDb = new MoviesDb();
+          await movieDb.add(newMovie);
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      }, 3000);
+    }),
+  searchMovies: ({
+    page,
+    query,
+    signal,
+  }: {
+    page: number;
+    query: string;
+    signal?: AbortSignal;
+  }) => {
+    return api({
+      path: `/search/movie`,
+      method: "GET",
+      responseType: "json",
+      signal,
+      responseSchema: MoviesListSchema,
+      query: {
+        page,
+        query,
+      },
+    });
+  },
+} as const;

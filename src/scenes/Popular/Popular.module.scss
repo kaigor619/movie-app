@@ -1,0 +1,24 @@
+.loadMore {
+  --text-primary-rgb: 255, 255, 255;
+
+  margin: 3rem auto 3rem auto;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  background-color: var(--button-bg);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  color: rgba(var(--text-primary-rgb), 0.9);
+  transition: 0.2s background-color;
+
+  & > span {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-left: 0.7rem;
+  }
+
+  &:hover {
+    background-color: var(--button-hover-bg);
+  }
+}

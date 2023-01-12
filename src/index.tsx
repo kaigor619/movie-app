@@ -1,16 +1,20 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-
+import { router } from "./routes";
 import "./index.css";
-import { App } from "./components/App";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      retry: (failureCount: number, error: unknown) => {
+        if (error instanceof Error)
+          return error.name !== "ZodError" && failureCount <= 1 ? true : false;
+
+        return failureCount <= 1 ? true : false;
+      },
     },
   },
 });
@@ -19,14 +23,10 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <App />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,13 +1,12 @@
 .sidebar {
-  background-color: #1a1c20;
-  min-width: 17rem;
+  background-color: rgb(var(--background-sidebar-rgb));
+  min-width: var(--sidebar-width);
 }
 
 .sidebarMenu {
   padding: 0;
   margin: 0;
   list-style: none;
-
   margin-top: 3rem;
 
   li {
@@ -16,31 +15,33 @@
     justify-content: space-between;
     padding: 1rem 1rem 1rem 1.5rem;
     cursor: pointer;
-    background-color: #1a1c20;
+    background-color: inherit;
     transition: 0.2s;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--text-primary-rgb), 0.5);
+    font-weight: 500;
 
     &:hover:not(.active) {
-      background-color: #1f2126;
+      background-color: rgba(var(--background-page-rgb), 0.6);
 
       span {
-        transform: translateX(5px);
+        transform: translateX(0.5rem);
       }
     }
 
     &.active {
       .menuItemIcon {
-        opacity: 1;
-        transform: translateX(0px);
+        opacity: 0.4;
+        transform: translateX(0rem);
       }
-      background-color: #222a33;
-      color: rgba(255, 255, 255, 0.9);
+      background-color: rgb(var(--background-page-rgb));
+      color: rgba(var(--text-primary-rgb), 0.9);
     }
 
     & > .menuItemIcon {
       opacity: 0;
-      transform: translateX(-20px);
+      transform: translateX(-1rem);
       transition: 0.2s;
+      display: flex;
     }
 
     & > span {

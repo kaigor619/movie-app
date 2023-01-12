@@ -1,0 +1,36 @@
+.form {
+  margin: 0 auto;
+  padding: 1.6rem;
+  background-color: rgb(var(--background-page-rgb));
+  border-radius: 0.5rem;
+
+  & > h3 {
+    color: rgb(var(--text-primary-rgb));
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-top: 0;
+  }
+}
+
+.btnSubmit {
+  width: 100%;
+  padding: 0.6rem 0;
+  background-color: var(--button-bg);
+  border: none;
+  color: white;
+  border-radius: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: 0.2s background-color;
+
+  &:not(:disabled):hover {
+    background-color: var(--button-hover-bg);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}

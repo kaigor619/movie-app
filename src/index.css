@@ -1,6 +1,43 @@
-body {
+body,
+input {
   margin: 0;
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  /* colors */
+  --ebony-clay-rgb: 34, 42, 49;
+  --coral-red-light-rgb: 255, 67, 80;
+  --coral-red-dark-rgb: 248, 68, 80;
+  --shark-rgb: 26, 28, 32;
+  --yellow-sea-rgb: 255, 173, 11;
+  --oxford-blue-rgb: 58, 73, 86;
+  --blue-bayoux-rgb: 65, 83, 98;
+  --gallery-rgb: 240, 240, 240;
+  --dodger-blue-rgb: 59, 109, 255;
+  --mariner-rgb: 47, 90, 214;
+
+  --sidebar-width: 17rem;
+  --button-bg: rgb(var(--dodger-blue-rgb));
+  --button-hover-bg: rgb(var(--mariner-rgb));
+  --error-color: rgb(255, 0, 0);
+}
+
+body[data-theme="dark"] {
+  --background-page-rgb: var(--ebony-clay-rgb);
+  --background-header-rgb: var(--coral-red-light-rgb);
+  --background-sidebar-rgb: var(--shark-rgb);
+  --background-error-rgb: 115 27 31;
+  --text-primary-rgb: 255, 255, 255;
+  --text-primary: rgb(var(--text-primary-rgb));
+}
+body[data-theme="light"] {
+  --background-page-rgb: 255, 255, 255;
+  --background-header-rgb: var(--coral-red-light-rgb);
+  --background-sidebar-rgb: 246, 246, 246;
+  --background-error-rgb: 115 27 31;
+  --text-primary-rgb: 0, 0, 0;
+  --text-primary: rgb(var(--text-primary-rgb));
 }

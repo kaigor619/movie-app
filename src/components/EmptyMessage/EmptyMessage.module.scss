@@ -1,0 +1,13 @@
+.emptyMessage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  & > p {
+    color: rgba(var(--text-primary-rgb), 0.5);
+    font-size: 1.2rem;
+    margin: 1rem 0 0 0;
+  }
+}
