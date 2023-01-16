@@ -1,4 +1,5 @@
-import { useQuery } from "react-query";
+import { useEffect, useRef, useState } from "react";
+import { useQuery, useQueryClient } from "react-query";
 import { MovieApi, GenreList } from "api/movieApi";
 
 interface CategoryTypes {
@@ -13,6 +14,13 @@ const categoryApi: {
   popular: (page: number) => MovieApi.getPopularMovies({ page }),
 };
 
+interface QueryState<T> {
+  isLoading: boolean;
+  isFetching: boolean;
+  error: Error | null;
+  data: T | null;
+}
+
 export const useMovies = <T extends keyof CategoryTypes>({
   category,
   page,
@@ -20,16 +28,151 @@ export const useMovies = <T extends keyof CategoryTypes>({
   category: T;
   page: number;
 }) => {
-  const movieQuery = useQuery<
-    CategoryTypes[T],
-    Error,
-    CategoryTypes[T],
-    QueryKeys
-  >([category, { page }], () => categoryApi[category](page), {
-    refetchOnMount: true,
-    keepPreviousData: true,
-    staleTime: 1000 * 5 * 60,
+  const didMount = useRef(false);
+
+  const queryClient = useQueryClient();
+
+  const [movieQuery, setMovieQuery] = useState<QueryState<CategoryTypes[T]>>({
+    isLoading: true,
+    isFetching: true,
+    error: null,
+    data: null,
   });
+
+  const getSuccessState = (data: CategoryTypes[T]) => {
+    return {
+      isLoading: false,
+      isFetching: false,
+      error: null,
+      data,
+    };
+  };
+
+  const getFetchingState = (isLoading = false) => {
+    return {
+      isLoading,
+      isFetching: true,
+      error: null,
+      data: !isLoading ? movieQuery.data : null,
+    };
+  };
+  const getErrorState = (error: Error) => {
+    return {
+      isLoading: true,
+      isFetching: true,
+      data: null,
+      error,
+    };
+  };
+
+  const getMoviesFromCache = async () => {
+    const queryState = await queryClient.getQueryState<CategoryTypes[T], Error>(
+      [category, { page }]
+    );
+
+    return queryState;
+  };
+  const fetchMovies = async () => {
+    const data = await queryClient.fetchQuery([category, { page }], () =>
+      categoryApi[category](page)
+    );
+
+    return data;
+  };
+
+  useEffect(() => {
+    (async () => {
+      const queryState = await getMoviesFromCache();
+
+      if (queryState?.data)
+        return setMovieQuery(getSuccessState(queryState?.data));
+
+      setMovieQuery(getFetchingState(true));
+
+      try {
+        const data = await fetchMovies();
+        setMovieQuery(getSuccessState(data));
+      } catch (error) {
+        if (error instanceof Error) setMovieQuery(getErrorState(error));
+      }
+    })();
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    let asyncResult: {
+      scrolled: boolean;
+      moviesState: QueryState<CategoryTypes[T]> | null;
+    } = {
+      scrolled: false,
+      moviesState: null,
+    };
+
+    const changeAsyncResult = async (newAsyncResult: typeof asyncResult) => {
+      asyncResult = { ...newAsyncResult };
+
+      if (!newAsyncResult.moviesState || !newAsyncResult.scrolled) return;
+
+      setMovieQuery(newAsyncResult.moviesState);
+    };
+
+    (async () => {
+      const queryState = await getMoviesFromCache();
+
+      if (queryState?.data) {
+        setMovieQuery(getFetchingState());
+        changeAsyncResult({
+          ...asyncResult,
+          moviesState: getSuccessState(queryState?.data),
+        });
+        return;
+      }
+
+      setMovieQuery(getFetchingState());
+
+      try {
+        const data = await fetchMovies();
+
+        changeAsyncResult({
+          ...asyncResult,
+          moviesState: getSuccessState(data),
+        });
+      } catch (error) {
+        if (error instanceof Error) {
+          changeAsyncResult({
+            ...asyncResult,
+            moviesState: getErrorState(error),
+          });
+        }
+      }
+    })();
+
+    const onScrollHandler = () => {
+      if (window.scrollY === 0) {
+        changeAsyncResult({
+          ...asyncResult,
+          scrolled: true,
+        });
+      }
+    };
+
+    window.addEventListener("scroll", onScrollHandler);
+
+    return () => {
+      window.removeEventListener("scroll", onScrollHandler);
+    };
+    // eslint-disable-next-line
+  }, [page, category]);
 
   const genresQuery = useQuery<GenreList, Error, GenreList, QueryKeys>(
     "genres",
@@ -46,7 +189,7 @@ export const useMovies = <T extends keyof CategoryTypes>({
     error,
     isLoading,
     isFetching: movieQuery.isFetching,
-    isSuccess: movieQuery.data && genresQuery.data,
+    isSuccess: Boolean(movieQuery.data && genresQuery.data),
     movies: movieQuery.data,
     genres: genresQuery.data,
   };
