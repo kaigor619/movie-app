@@ -6,6 +6,7 @@ import {
   Pagination,
   MovieCard,
   EmptyMessage,
+  Overlay,
 } from "components";
 import { getPosterSrc, route } from "utils";
 import { useMovies } from "hooks";
@@ -17,7 +18,7 @@ export const NowPlaying: React.FC = () => {
 
   const activePage = Number(params.page) || 1;
 
-  const { isLoading, error, movies, genres } = useMovies({
+  const { isLoading, isFetching, error, movies, genres } = useMovies({
     category: "nowPlaying",
     page: activePage,
   });
@@ -31,6 +32,8 @@ export const NowPlaying: React.FC = () => {
         {isLoading && <Spinner size={5} center />}
 
         {movies && !movies.results.length && <EmptyMessage />}
+
+        {isFetching && !isLoading && <Overlay />}
 
         {movies && genres && (
           <>

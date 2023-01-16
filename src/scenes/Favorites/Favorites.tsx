@@ -9,6 +9,7 @@ import {
   Spinner,
   ErrorMessage,
   EmptyMessage,
+  Overlay,
 } from "components";
 import { AddNewMovie } from "./components/AddNewMovie";
 import { MovieApi, FavoriteMovies } from "api/movieApi";
@@ -22,13 +23,12 @@ export const Favorites: React.FC = observer(() => {
     data: favorites,
     isLoading,
     error,
+    isFetching,
   } = useQuery<FavoriteMovies, Error, FavoriteMovies, QueryKeys>(
     "favorites",
     MovieApi.getFavorites,
     {
-      enabled: true,
-      refetchOnMount: true,
-      keepPreviousData: true,
+      enabled: false,
       staleTime: 1000 * 5 * 60,
     }
   );
@@ -55,6 +55,8 @@ export const Favorites: React.FC = observer(() => {
         {isLoading && <Spinner size={5} center />}
 
         {favorites && !favorites.length && <EmptyMessage />}
+
+        {isFetching && !isLoading && <Overlay />}
 
         {favorites && (
           <Page.Grid className={styles.grid} childrenCount={favorites.length}>
