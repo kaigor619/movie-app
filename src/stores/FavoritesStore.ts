@@ -15,6 +15,15 @@ class FavoritesStore {
 
   getFavoritesMovies = async () => {
     try {
+      const queryState = await queryClient.getQueryState<FavoriteMovies, Error>(
+        "favorites"
+      );
+
+      if (queryState?.data) {
+        this.setFavorites(queryState.data);
+        return;
+      }
+
       const data = await queryClient.fetchQuery(
         "favorites",
         MovieApi.getFavorites

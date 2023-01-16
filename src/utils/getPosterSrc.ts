@@ -10,11 +10,6 @@ const sizes = {
 
 type PosterSizes = keyof typeof sizes;
 
-interface Arguments {
-  size: keyof typeof sizes;
-  posterPath: string;
-}
-
 export const getPosterSrc = (fileName: string, size: PosterSizes) => {
   return `${process.env.REACT_APP_API_POSTER_URL}/${sizes[size]}${fileName}`;
 };
