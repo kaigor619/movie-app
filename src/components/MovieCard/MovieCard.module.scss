@@ -45,3 +45,13 @@
   color: rgba(var(--text-primary-rgb), 0.3);
   font-size: 0.8rem;
 }
+
+.placeholder {
+  width: 100%;
+  border-radius: 0.5rem;
+  display: block;
+  cursor: pointer;
+  transition: 0.2s transform;
+  background-color: #2a343c;
+  height: 20rem;
+}

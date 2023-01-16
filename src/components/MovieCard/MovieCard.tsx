@@ -18,7 +18,11 @@ export const MovieCard: React.FC<Props> = ({
   return (
     <div className={styles.movieCard}>
       <div className={styles.imageWrap}>
-        <img onClick={onClick} src={imageSrc || "/"} alt="" />
+        {imageSrc ? (
+          <img onClick={onClick} src={imageSrc} alt="" />
+        ) : (
+          <div className={styles.placeholder} />
+        )}
 
         <div className={styles.rating}>{rating}</div>
       </div>
