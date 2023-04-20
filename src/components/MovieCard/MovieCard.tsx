@@ -16,10 +16,10 @@ export const MovieCard: React.FC<Props> = ({
   onClick,
 }) => {
   return (
-    <div className={styles.movieCard}>
+    <div className={styles.movieCard} data-testid="movie-card">
       <div className={styles.imageWrap}>
         {imageSrc ? (
-          <img onClick={onClick} src={imageSrc} alt="" />
+          <img onClick={onClick} src={imageSrc} alt="poster" />
         ) : (
           <div className={styles.placeholder} />
         )}

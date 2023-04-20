@@ -12,6 +12,11 @@ import {
 } from "./movieApiSchemas";
 import { MoviesDb } from "services/moviesDB";
 
+export const REQUEST_TIMEOUTS = {
+  getFavorites: 2000,
+  addFavorite: 1000,
+};
+
 export const MovieApi = {
   getNowPlayingMovies: ({ page = 1 }: { page: number }) =>
     api<NowPlayingMovies>({
@@ -60,7 +65,7 @@ export const MovieApi = {
         } catch (err) {
           reject(err);
         }
-      }, 2000);
+      }, REQUEST_TIMEOUTS.getFavorites);
     }),
   addFavoriteMovie: (newMovie: Omit<FavoriteMovie, "id">) =>
     new Promise<void>((resolve, reject) => {
@@ -72,7 +77,7 @@ export const MovieApi = {
         } catch (err) {
           reject(err);
         }
-      }, 3000);
+      }, REQUEST_TIMEOUTS.addFavorite);
     }),
   searchMovies: ({
     page,

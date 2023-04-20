@@ -18,8 +18,8 @@
     "baseUrl": "./src",
     "paths": {
       "@components/*": ["components/*"]
-    }
+    },
+    "types": ["cypress", "node", "@testing-library/cypress", "@percy/cypress"]
   },
-  "include": ["src"]
-  // "extends": "./tsconfig.paths.json"
+  "include": ["src", "cypress/e2e", "cypress.d.ts"]
 }

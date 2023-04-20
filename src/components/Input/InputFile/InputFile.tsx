@@ -22,7 +22,9 @@ export const InputFile: React.FC<Props> = ({ value, name, onChange }) => {
       </label>
 
       <input
+        data-testid="input-file"
         id={name}
+        name={name}
         type="file"
         className={styles.inputFile}
         onChange={(e) => onChange(e.target.files ? e.target.files[0] : null)}

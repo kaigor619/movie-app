@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorMessage component shows props title and description 1`] = `
+<DocumentFragment>
+  <div
+    class="errorMessage"
+    data-testid="error-message"
+  >
+    <img
+      alt="Broken robot"
+      class="image"
+      src="broken-robot.png"
+    />
+    <div
+      class=""
+    >
+      <h4
+        class="title"
+      >
+        My Error
+      </h4>
+      <pre
+        class="description"
+      >
+        API doesn't work
+      </pre>
+    </div>
+  </div>
+</DocumentFragment>
+`;

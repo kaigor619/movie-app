@@ -81,7 +81,7 @@ export function api<ResponseType>({
 
         if (isDevelopment) errorResponseSchema.parse(error);
 
-        throw new Error(error.status_message, { cause: error });
+        throw error;
       }
 
       let data: ResponseType | Blob | string | null = null;
@@ -89,27 +89,17 @@ export function api<ResponseType>({
       if (isSuccessRequest(response)) {
         if (responseType === "blob") data = await response.blob();
         else if (responseType === "json") data = await response.json();
-        else if (responseType === "text") data = await response.text();
         else if (responseType !== null) data = await response.json();
       }
 
       const schemaResult = responseSchema.parse(data);
 
       resolve(schemaResult);
-    } catch (err) {
+    } catch (err: any) {
       let error: Error = {
-        name: "Unknown",
-        message: "Something went wrong",
-        cause: null,
+        name: err?.name || "Unknown",
+        message: err?.status_message || err?.message || "Something went wrong",
       };
-
-      if (err instanceof Error) {
-        error = {
-          name: err.name,
-          message: err.message,
-          cause: err.cause || null,
-        };
-      }
 
       reject(error);
     }

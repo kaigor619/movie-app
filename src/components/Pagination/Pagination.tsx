@@ -10,9 +10,13 @@ interface Props {
 }
 
 export const Pagination: React.FC<Props> = observer(
-  ({ totalCount, activePage = 1, onChangePage }) => {
+  ({ totalCount, activePage = 0, onChangePage }) => {
     return (
-      <div className={styles.pagination} data-theme={themeStore.theme}>
+      <div
+        data-testid="pagination"
+        className={styles.pagination}
+        data-theme={themeStore.theme}
+      >
         <ReactPaginate
           breakLabel="..."
           nextLabel=">"

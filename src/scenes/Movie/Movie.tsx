@@ -33,12 +33,14 @@ export const Movie: React.FC = () => {
 
   return (
     <Page>
-      <div className={styles.arrowBack}>
-        <IconArrowLeft
-          size="30"
-          cursor="pointer"
-          onClick={() => navigate(-1)}
-        />
+      <div>
+        <button data-testid="go-back" className={styles.arrowBack}>
+          <IconArrowLeft
+            size="30"
+            cursor="pointer"
+            onClick={() => navigate(-1)}
+          />
+        </button>
       </div>
 
       <div className={styles.row}>
@@ -55,7 +57,7 @@ export const Movie: React.FC = () => {
                     ? getPosterSrc(details.poster_path, 500)
                     : ""
                 }
-                alt=""
+                alt="Poster"
               />
             </div>
             <div className={styles.movieContent}>

@@ -9,7 +9,7 @@ export const MoviesListSchema = z.object({
       poster_path: z.string().nullable(),
       adult: z.boolean(),
       overview: z.string(),
-      release_date: z.string(),
+      release_date: z.string().optional(),
       genre_ids: z.array(z.number().int()),
       id: z.number().int(),
       original_title: z.string(),

@@ -21,6 +21,8 @@ export const Spinner: React.FC<Props> = ({ size, center = false }) => {
         height={`${size}rem`}
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid"
+        role="img"
+        data-testid="spinner"
       >
         <circle
           cx="50"

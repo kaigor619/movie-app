@@ -1,10 +1,13 @@
 import { makeAutoObservable, autorun } from "mobx";
-import { makePersistable, stopPersisting } from "mobx-persist-store";
+import { makePersistable } from "mobx-persist-store";
 
-type Theme = "dark" | "light";
+export type Theme = "dark" | "light";
 
-const isBrowserDefaultDark = () =>
-  window.matchMedia("(prefers-color-scheme: dark)").matches;
+const isBrowserDefaultDark = () => {
+  if (process.env.NODE_ENV === "test") return true;
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+};
 
 class ThemeStore {
   constructor() {
@@ -28,10 +31,6 @@ class ThemeStore {
   }
 
   theme: Theme = isBrowserDefaultDark() ? "dark" : "light";
-
-  stopStore(): void {
-    stopPersisting(this);
-  }
 
   setTheme = (theme: Theme): void => {
     this.theme = theme;

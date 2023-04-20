@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal component checks snapshots 1`] = `
+<body>
+  <div
+    id="modal-root"
+  >
+    <div
+      class="modalWrap"
+    >
+      <div
+        class="background"
+        data-testid="overlay"
+      />
+      <div
+        class="modalContent"
+        data-testid="dialog"
+        style="max-width: 30rem;"
+      >
+        <h1>
+          Hello world!
+        </h1>
+      </div>
+    </div>
+  </div>
+  <div />
+</body>
+`;

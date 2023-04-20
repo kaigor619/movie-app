@@ -16,7 +16,16 @@ interface Props {
 }
 
 export const Input: React.FC<Props> = observer(
-  ({ name, label, type = "text", errorMessage, onChange, onFocus, onBlur }) => {
+  ({
+    name,
+    label,
+    value,
+    type = "text",
+    errorMessage,
+    onChange,
+    onFocus,
+    onBlur,
+  }) => {
     return (
       <>
         {label && (
@@ -30,6 +39,7 @@ export const Input: React.FC<Props> = observer(
             id={name}
             name={name}
             type={type}
+            value={value}
             className={clsx(styles.input, {
               [styles.error]: !!errorMessage,
             })}

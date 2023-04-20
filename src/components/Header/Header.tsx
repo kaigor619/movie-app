@@ -55,39 +55,34 @@ export const Header: React.FC = observer(() => {
   };
 
   return (
-    <>
-      <header className={styles.header}>
-        <div className={styles.logoWrapper}>
-          <div
-            onClick={() => {
-              navigate(route("main"));
-            }}
-          >
-            <IconDeviceTv size="22" />
-            <span>Movies</span>
-          </div>
+    <header className={styles.header}>
+      <div className={styles.logoWrapper}>
+        <div onClick={() => navigate(route("main"))}>
+          <IconDeviceTv size="22" />
+          <span>Movies</span>
         </div>
+      </div>
 
-        <div className={styles.searchWrap}>
-          <IconSearch size="18" color="white" className={styles.searchIcon} />
-          <input
-            type="text"
-            value={search}
-            onChange={handleChange}
-            className={styles.searchInput}
+      <div className={styles.searchWrap}>
+        <IconSearch size="18" color="white" className={styles.searchIcon} />
+        <input
+          type="text"
+          value={search}
+          onChange={handleChange}
+          className={styles.searchInput}
+          data-testid="search-movie"
+        />
+
+        <div className={styles.themeSwitcher}>
+          <DarkModeSwitch
+            checked={themeStore.theme === "dark"}
+            onChange={themeStore.toggleTheme}
+            size={20}
+            moonColor="#fff"
+            sunColor="#fff"
           />
-
-          <div className={styles.themeSwitcher}>
-            <DarkModeSwitch
-              checked={themeStore.theme === "dark"}
-              onChange={themeStore.toggleTheme}
-              size={20}
-              moonColor="#fff"
-              sunColor="#fff"
-            />
-          </div>
         </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 });

@@ -68,6 +68,7 @@ export const Popular: React.FC = observer(() => {
                 onClick={() => fetchNextPage()}
                 disabled={isFetchingNextPage}
                 data-theme={themeStore.theme}
+                data-testid="load-more-btn"
               >
                 <IconRotate size="35" cursor="pointer" />
                 <span>

@@ -5,6 +5,9 @@
 
 .arrowBack {
   margin-bottom: 1rem;
+  background-color: inherit;
+  outline: none;
+  border: none;
 
   & > svg {
     color: rgba(var(--text-primary-rgb), 0.8);

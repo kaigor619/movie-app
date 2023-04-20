@@ -11,7 +11,7 @@ export const ErrorMessage: React.FC<Props> = ({
   description,
 }) => {
   return (
-    <div className={styles.errorMessage}>
+    <div data-testid="error-message" className={styles.errorMessage}>
       <img className={styles.image} src={brokenRobot} alt="Broken robot" />
       <div className="">
         <h4 className={styles.title}>{title}</h4>

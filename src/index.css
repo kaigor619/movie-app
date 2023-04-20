@@ -7,6 +7,7 @@ input {
 }
 
 body {
+  background-color: rgb(var(--background-page-rgb));
   /* colors */
   --ebony-clay-rgb: 34, 42, 49;
   --coral-red-light-rgb: 255, 67, 80;

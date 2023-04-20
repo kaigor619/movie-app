@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input component checks snapshot 1`] = `
+<DocumentFragment>
+  <label
+    class="label"
+    for="name"
+  >
+    Name
+  </label>
+  <div
+    class="inputWrapper"
+    data-theme="dark"
+  >
+    <input
+      class="input error"
+      id="name"
+      name="name"
+      type="text"
+      value="Bruce"
+    />
+    <span
+      class="inputError"
+    >
+      Required
+    </span>
+  </div>
+</DocumentFragment>
+`;

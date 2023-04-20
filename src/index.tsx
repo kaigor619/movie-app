@@ -1,20 +1,74 @@
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider, Outlet, createBrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { router } from "./routes";
+import { Layout } from "components/Layout";
+import {
+  Favorites,
+  NowPlaying,
+  Movie,
+  Popular,
+  Search,
+  ErrorPage,
+} from "scenes";
+import { routesConfig } from "./routes";
 import "./index.css";
+
+export const ROUTE_NAMES = {
+  main: "main",
+  search: "search",
+  nowPlaying: "nowPlaying",
+  popular: "popular",
+  favorites: "favorites",
+  movieDetails: "movieDetails",
+} as const;
+
+export const router = createBrowserRouter([
+  {
+    element: (
+      <Layout>
+        <Outlet />
+      </Layout>
+    ),
+    errorElement: <ErrorPage />,
+    path: "/",
+    children: [
+      {
+        element: <NowPlaying />,
+        index: true,
+      },
+      {
+        element: <NowPlaying />,
+        path: routesConfig.nowPlaying.path,
+      },
+      {
+        element: <Popular />,
+        path: routesConfig.popular.path,
+        shouldRevalidate: () => {
+          return false;
+        },
+      },
+      {
+        element: <Favorites />,
+        path: routesConfig.favorites.path,
+      },
+      {
+        element: <Search />,
+        path: routesConfig.search.path,
+      },
+      {
+        element: <Movie />,
+        path: routesConfig.movieDetails.path,
+      },
+    ],
+  },
+]);
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      retry: (failureCount: number, error: unknown) => {
-        if (error instanceof Error)
-          return error.name !== "ZodError" && failureCount <= 1 ? true : false;
-
-        return failureCount <= 1 ? true : false;
-      },
+      retry: false,
     },
   },
 });

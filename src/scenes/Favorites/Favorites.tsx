@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
 import { useQuery } from "react-query";
 import { IconPlus } from "@tabler/icons";
 import {
@@ -10,14 +8,16 @@ import {
   ErrorMessage,
   EmptyMessage,
   Overlay,
+  ThemeConsumer,
+  Control,
 } from "components";
+import { useControl } from "hooks/useControl";
 import { AddNewMovie } from "./components/AddNewMovie";
 import { MovieApi, FavoriteMovies } from "api/movieApi";
-import { favoritesStore, themeStore } from "stores";
 import styles from "./Favorites.module.scss";
 
-export const Favorites: React.FC = observer(() => {
-  const [isOpenModal, setOpenModal] = useState(false);
+export const Favorites: React.FC = () => {
+  const control = useControl(false);
 
   const {
     data: favorites,
@@ -28,24 +28,24 @@ export const Favorites: React.FC = observer(() => {
     "favorites",
     MovieApi.getFavorites,
     {
-      enabled: false,
       staleTime: 1000 * 5 * 60,
     }
   );
 
-  useEffect(() => {
-    favoritesStore.getFavoritesMovies();
-  }, []);
-
   return (
     <Page>
-      <Modal
-        open={isOpenModal}
-        onClose={() => setOpenModal(false)}
-        maxWidth={22}
-      >
-        <AddNewMovie onClose={() => setOpenModal(false)} />
-      </Modal>
+      <Control
+        control={control}
+        render={(isOpenModal) => (
+          <Modal
+            open={isOpenModal}
+            onClose={() => control.set(false)}
+            maxWidth={22}
+          >
+            <AddNewMovie onClose={() => control.set(false)} />
+          </Modal>
+        )}
+      />
 
       <Page.Title title="Favorites" />
 
@@ -73,13 +73,18 @@ export const Favorites: React.FC = observer(() => {
         )}
       </Page.Content>
 
-      <div
-        className={styles.addNewMovie}
-        data-theme={themeStore.theme}
-        onClick={() => setOpenModal(true)}
-      >
-        <IconPlus size="25" />
-      </div>
+      <ThemeConsumer>
+        {(theme) => (
+          <button
+            className={styles.addNewMovie}
+            data-theme={theme}
+            onClick={() => control.set(true)}
+            data-testid="add-movie"
+          >
+            <IconPlus size="25" />
+          </button>
+        )}
+      </ThemeConsumer>
     </Page>
   );
-});
+};

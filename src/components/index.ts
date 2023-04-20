@@ -10,3 +10,5 @@ export * from "./Pagination";
 export * from "./Sidebar";
 export * from "./Spinner";
 export * from "./Overlay";
+export * from "./ThemeConsumer";
+export * from "./Control";

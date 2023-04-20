@@ -98,4 +98,10 @@ export class MoviesDb {
       };
     });
   }
+
+  static clean = () => {
+    const indexedDB = window.indexedDB;
+
+    indexedDB.deleteDatabase(MoviesDb.dbName);
+  };
 }
